@@ -20,8 +20,8 @@ robot = RRInit();
 tau_max = []; % [N-m] (Scalar)
 
 % Time
-dt = []; % [s]
-t_f = []; % [s]
+dt = 0.01; % [s]
+t_f = 10; % [s]
 
 % Initial Conditions
 X_0 = [];
