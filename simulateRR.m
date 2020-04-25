@@ -54,7 +54,7 @@ acc = zeros(2,length(t)); %acceleration
 
 for i = 1:length(t)    
     % Control torques
-    tau = [0; 0];
+    tau = [1; 0];
     
     % Apply joint torque limits
     tau(tau>tau_max) = tau_max;
@@ -78,17 +78,17 @@ for i = 1:length(t)
 	% Update State Vectors
 	X = [pos(1,i) vel(1,i) pos(2,i) vel(2,i)];
 	X_dot = [vel(1,i) acc(1,i) vel(2,i) acc(2,i)];
-	
+	robot.tool = dhtf(0,0,0,X(1))*dhtf(pi/2, robot.l_1, 0, X(3))*dhtf(0, robot.l_2, 0, 0);
     % Plot Energy
     
 end
 
 % Graphical Simulation
-% robot.handles = drawRR([],robot);
-% for i = 2:length(t)
-%     setRR([],robot);
-%     pause(1e-6); % adjustable pause in seconds
-% end
+robot.handles = drawRR(pos(:,1),robot);
+for i = 2:length(t)
+    setRR(pos(:,i),robot);
+    pause(1e-6); % adjustable pause in seconds
+end
 
 % Plot Output
 

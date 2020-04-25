@@ -35,9 +35,9 @@ ax = axes('XLim',robot.workspace(1:2),'YLim',robot.workspace(3:4),...
 view(3);
 grid on;
 axis equal;
-xlabel('X (mm)','FontSize',16);
-ylabel('Y (mm)','FontSize',16);
-zlabel('Z (mm)','FontSize',16);
+xlabel('X (m)','FontSize',16);
+ylabel('Y (m)','FontSize',16);
+zlabel('Z (m)','FontSize',16);
 
 % Create frames and links
 h = drawRobotFrame([0,0,0]);
@@ -50,7 +50,7 @@ set(hg,'Parent',T_0);
 h = drawRobotFrame(robot.colors{1});
 hg = hggroup('Parent',ax);
 set(h,'Parent',hg);
-L_1 = line([0,L_1],[0,0],[0,0],...
+L_1 = line([0,robot.l_1],[0,0],[0,0],...
     'Color',robot.colors{1},'LineWidth',1.5);
 set(L_1,'Parent',hg);
 T_1 = hgtransform('Parent',T_0,'Matrix',robot_T{1});
@@ -60,7 +60,7 @@ set(hg,'Parent',T_1);
 h = drawRobotFrame(robot.colors{2});
 hg = hggroup('Parent',ax);
 set(h,'Parent',hg);
-L_2 = line([0,L_2],[0,0],[0,0],...
+L_2 = line([0,robot.l_2],[0,0],[0,0],...
     'Color',robot.colors{2},'LineWidth',1.5);
 set(L_2,'Parent',hg);
 T_2 = hgtransform('Parent',T_1,'Matrix',robot_T{2});
@@ -75,6 +75,10 @@ set(hg,'Parent',T_3);
 
 set(gcf,'Renderer','openGL');
 drawnow;
+wslim=robot.workspace; %workspace limits
+xlim(wslim(1:2));
+ylim(wslim(3:4));
+zlim(wslim(5:6));
 
 % Return hgtransform handles
 handles = [T_1,T_2,T_3];
