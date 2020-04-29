@@ -40,7 +40,6 @@ rob_struct.parameters.J1 = J1;
 rob_struct.parameters.J2 = J2;
 rob_struct.parameters.J3 = J3;
 
-
 % Robot joint limits (deg)
 deg2rad = pi/180;
 rob_struct.joint_limits{1} = [-180,180]*deg2rad;

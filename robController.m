@@ -7,17 +7,29 @@ function [ tau ] = robController( trajectory, Theta, Theta_dot, t , rob )
 %    robot. The controller determines tau based on the desired position and
 %    velocity and the actual position and velocity. Desired position and
 %    velocity are obtained from trajectory and the current time t. The
-%    actua position is Theta, and the actual velocity is Theta_dot.
+%    actual position is Theta, and the actual velocity is Theta_dot.
 %    Calculate the torques needed to add gravity compensation using the
 %    robot parameters from the structure rob.
 %
 
 % Robot Parameters from rob
 g = rob.parameters.g;
-...
+b = rob_struct.parameters.b;
+m1 = rob_struct.parameters.m1;
+m2 = rob_struct.parameters.m2;
+m3 = rob_struct.parameters.m3;
+m4 = rob_struct.parameters.m4;
+l1 = rob_struct.parameters.l1;
+l2 = rob_struct.parameters.l2;
+l3 = rob_struct.parameters.l3;
+I1 = rob_struct.parameters.I1;
+I2 = rob_struct.parameters.I2;
+J1 = rob_struct.parameters.J1;
+J2 = rob_struct.parameters.J2;
+J3 = rob_struct.parameters.J3;
     
 % Gravity Compensation Vector
-G = []; %[3x1] vector
+G = [m1*g*cos(Theta(1)); m2*g*cos(Theta(2)); (m3+m4)*g*cos(Theta(3))]; %[3x1] vector
 
 % Trajectory interpolation (DO NOT CHANGE)
 Theta_ref = zeros(3,1);
