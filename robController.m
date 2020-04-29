@@ -14,19 +14,19 @@ function [ tau ] = robController( trajectory, Theta, Theta_dot, t , rob )
 
 % Robot Parameters from rob
 g = rob.parameters.g;
-b = rob_struct.parameters.b;
-m1 = rob_struct.parameters.m1;
-m2 = rob_struct.parameters.m2;
-m3 = rob_struct.parameters.m3;
-m4 = rob_struct.parameters.m4;
-l1 = rob_struct.parameters.l1;
-l2 = rob_struct.parameters.l2;
-l3 = rob_struct.parameters.l3;
-I1 = rob_struct.parameters.I1;
-I2 = rob_struct.parameters.I2;
-J1 = rob_struct.parameters.J1;
-J2 = rob_struct.parameters.J2;
-J3 = rob_struct.parameters.J3;
+b = rob.parameters.b;
+m1 = rob.parameters.m1;
+m2 = rob.parameters.m2;
+m3 = rob.parameters.m3;
+m4 = rob.parameters.m4;
+l1 = rob.parameters.l1;
+l2 = rob.parameters.l2;
+l3 = rob.parameters.l3;
+I1 = rob.parameters.I1;
+I2 = rob.parameters.I2;
+J1 = rob.parameters.J1;
+J2 = rob.parameters.J2;
+J3 = rob.parameters.J3;
     
 % Gravity Compensation Vector
 G = [m1*g*cos(Theta(1)); m2*g*cos(Theta(2)); (m3+m4)*g*cos(Theta(3))]; %[3x1] vector
@@ -40,11 +40,15 @@ for i = 1:3
 end
 
 % Gravity Compensation Control
+% ???
 
-K_p = []; % Proportional gain matrix containing gains K_p1 to K_p3
-K_v = []; % Derivative gain matrix containing gains K_v1 to K_v3
+K_p = [100 100 100]; % Proportional gain matrix containing gains K_p1 to K_p3
+K_v = [25 25 25]; % Derivative gain matrix containing gains K_v1 to K_v3
 
-tau = []; % control input (torque)
+%Error Calculations to determine Tau
+errTheta = Theta - Theta_ref;
+errTheta_dot = Theta_dot - Theta_dot_ref;
+tau = [errTheta(1) errTheta_dot(1); errTheta(2) errTheta_dot(2); errTheta(3) errTheta_dot(3)]*[Kp; Kv];% control input (torques)
 
 end
 
