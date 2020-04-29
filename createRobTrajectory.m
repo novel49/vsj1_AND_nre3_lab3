@@ -18,11 +18,34 @@ function [ trajectory ] = createRobTrajectory( via, rob )
 %    t_f given to you below. Rows 2 through 4 contain joint angles,
 %    and rows 5 7 should contain joint velocities.
 
-t_f = 30; % final time (do not change) [s]
-
-trajectory(1,:) = []; %Time
-trajectory(2:4,:) = []; %Joint angles
-trajectory(5:7,:) = []; %Joiint velocities
+	dt = 0.1;
+	t_f = 30; % final time (do not change) [s]
+	t = 0:dt:t_f;
+	t_goal = [5 25 30];
+	pos = zeros(3,length(t));
+	vel = zeros(3,length(t));
+	
+	for n = 1:length(t_goal)
+		if n == 1
+			istart = 1; %index
+			[~, startjoint] = robIK(via(:,n),[0;0;0],rob); %initial joint positions
+		else
+			istart = find(t==t_goal(n-1));
+			[~, startjoint] = robIK(via(:,n),pos(:,t==t_goal(n-1)),rob);
+		end
+		iend = find(t==t_goal(n)); %index
+		[~, endjoint] = robIK(via(:,n+1),pos(:,t==t_goal(n)),rob); %end joint positions
+		
+		for j = 1:3
+			pos(j,istart:iend) = linspace(startjoint(j),endjoint(j),iend-istart+1);
+		end
+	end
+	
+	vel(:,2:end) = (pos(:,2:end) - pos(:,1:end-1))/dt;
+	
+	trajectory(1,:) = t; %Time
+	trajectory(2:4,:) = pos; %Joint angles
+	trajectory(5:7,:) = vel; %Joiint velocities
 
 end
 
